@@ -23,9 +23,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<NotesBloc>(context).add(const UserNotesEvent(
+    BlocProvider.of<NotesBloc>(context).add(UserNotesEvent(
       url: Urls.getNotes,
-      userUuid: "acdf96be-ae8f-4647-8c22-314141ef716f",
+      userUuid: Preferences.getString(Preferences.userUuid) ?? "",
     ));
   }
 
@@ -33,10 +33,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.blueGrey,
         automaticallyImplyLeading: false,
         title: Text(
-          "Hey, ${Preferences.getString(Preferences.userName)}",
+          "Hey, ${Preferences.getString(Preferences.userName)?.split(' ').first}",
           style: const TextStyle(color: Colors.white),
         ),
         actions: [
@@ -71,7 +71,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           },
           builder: (context, state) {
             if (state is NotesLoading || state is NotesInitial) {
-              return const CircularProgressIndicator();
+              return const Center(child: CircularProgressIndicator());
             } else if (state is NotesSuccess) {
               notes.value = state.getNotes;
               return ValueListenableBuilder(
@@ -168,59 +168,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
               );
             }
           },
-          /*builder: (context, state) {
-            if (state is NotesLoading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state is NotesSuccess) {
-              return ValueListenableBuilder<GetNotes?>(
-                valueListenable: notes,
-                builder: (context, value, _) {
-                  if (value != null && value.data!.data.isNotEmpty) {
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: value.data!.data.length,
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      itemBuilder: (context, index) {
-                        final college = value.data!.data[index];
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5),
-                          child: Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(18),
-                              border:
-                                  Border.all(color: const Color(0xffF3F3F3)),
-                            ),
-                            child: Text(
-                              "${college.uuid}",
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  } else {
-                    return const Center(child: Text("No Data Found"));
-                  }
-                },
-              );
-            } else if (state is NotesFailed) {
-              return const Center(child: Text("Failed to load notes"));
-            } else {
-              return const Center(child: Text("No Data Found"));
-            }
-          },*/
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Get.to(const UploadNotes());
         },
-        child: const Icon(Icons.add),
+        backgroundColor: Colors.grey,
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
     );
   }

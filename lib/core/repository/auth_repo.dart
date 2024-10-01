@@ -279,4 +279,38 @@ class AuthRepo {
       fail(CommonModel(success: false, message: e.toString()));
     }
   }
+
+  Future<void> uploadNotes({
+    required ApiService apiService,
+    required String url,
+    required Map<String, dynamic> body,
+    required Function(CommonModel getNotes) success,
+    required Function(CommonModel commonModel) failure,
+  }) async {
+    try {
+      var result = await apiService.postMethod(
+        url: url,
+        body: body,
+        isAuthentication: true,
+      );
+
+      print("Notes response: $result");
+
+      CommonModel model = CommonModel.fromJson(result);
+
+      print("Parsed Model Data: ${model.data}");
+
+      if (model.success == true) {
+        success(model);
+      } else {
+        failure(CommonModel(
+          success: false,
+          message: model.message ?? "Error in Getting Notes",
+        ));
+      }
+    } catch (error) {
+      print("Error fetching notes: $error");
+      failure(CommonModel(success: false, message: error.toString()));
+    }
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:bloc_api/core/bloc/get_note_bloc/notes_bloc.dart';
 import 'package:bloc_api/core/bloc/stream_bloc/stream_bloc.dart';
+import 'package:bloc_api/core/bloc/upload_notes_bloc/note_upload_bloc.dart';
 import 'package:bloc_api/core/repository/auth_repo.dart';
 import 'package:bloc_api/core/service/api_services.dart';
 import 'package:bloc_api/core/service/shredPreferences.dart';
@@ -117,9 +118,18 @@ class _MyAppState extends State<MyApp> {
               authRepo: authRepo,
             );
           },
-        ), BlocProvider(
+        ),
+        BlocProvider(
           create: (context) {
             return ForgotPasswordBloc(
+              apiService: apiService,
+              authRepo: authRepo,
+            );
+          },
+        ),
+        BlocProvider(
+          create: (context) {
+            return NoteUploadBloc(
               apiService: apiService,
               authRepo: authRepo,
             );

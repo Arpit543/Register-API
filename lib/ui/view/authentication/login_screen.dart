@@ -9,27 +9,24 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/bloc/auth/forgot_password_bloc/forgot_password_bloc.dart';
 import '../../../core/bloc/auth/login_bloc/login_screen_bloc.dart';
+import '../../../core/service/urls.dart';
 import '../../widget/common_button.dart';
 import '../../widget/common_snackbar.dart';
 import '../../widget/common_textfield.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
-late double height;
-late double width;
-
 class _LoginPageState extends State<LoginPage> {
   final _loginKey = GlobalKey<FormState>();
-  var emailController = TextEditingController();
-  var passwordController = TextEditingController();
-  var forgotEmailController = TextEditingController();
-  ValueNotifier<bool> loginSubmitBtnLoader = ValueNotifier(false);
-
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final forgotEmailController = TextEditingController();
+  final ValueNotifier<bool> loginSubmitBtnLoader = ValueNotifier(false);
   static late final SharedPreferences _prefs;
 
   @override
@@ -40,10 +37,11 @@ class _LoginPageState extends State<LoginPage> {
 
   static Future<SharedPreferences> init() async =>
       _prefs = await SharedPreferences.getInstance();
-  ValueNotifier<bool> obscureTextPassword = ValueNotifier(true);
+
+  final ValueNotifier<bool> obscureTextPassword = ValueNotifier(true);
   String emailError = "";
   bool emailValid = false;
-  ValueNotifier<bool> forgotSubmitBtnLoader = ValueNotifier(false);
+  final ValueNotifier<bool> forgotSubmitBtnLoader = ValueNotifier(false);
 
   bool checkEmail() {
     if (emailController.text.isEmpty) {
@@ -81,57 +79,64 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(width * 0.04), // Responsive padding
             child: Column(
               children: [
-                const SizedBox(
-                  height: 200,
-                ),
-                Text.rich(TextSpan(children: [
-                  TextSpan(
+                SizedBox(height: height * 0.1), // Responsive spacing
+                Text.rich(
+                  TextSpan(children: [
+                    TextSpan(
                       text: "Welcome ",
                       style: TextStyle(
-                          fontSize: width * 0.11,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey)),
-                  TextSpan(
+                        fontSize: width * 0.1,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    TextSpan(
                       text: "Back",
                       style: TextStyle(
-                          fontSize: width * 0.11, fontWeight: FontWeight.bold))
-                ])),
-                _loginFrom(),
-                const SizedBox(
-                  height: 10,
+                        fontSize: width * 0.1,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ]),
                 ),
+                _loginForm(),
+                SizedBox(height: height * 0.02), // Responsive spacing
                 Align(
                   alignment: Alignment.bottomRight,
                   child: InkWell(
                     onTap: () {
-                      //Get.to(const RegisterScreen());
                       forgotPasswordSheet();
                     },
-                    child: const Text('Forgot Password?',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold)),
+                    child: Text(
+                      'Forgot Password?',
+                      style: TextStyle(
+                        fontSize: width * 0.045,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
+                SizedBox(height: height * 0.02), // Responsive spacing
                 BlocListener<LoginScreenBloc, LoginState>(
                   listener: (context, state) {
                     if (state is LoginSuccess) {
                       _prefs.setString(Preferences.token,
                           state.loginModel.data?.accessToken ?? "");
-                      _prefs.setString(Preferences.token,
-                          state.loginModel.data?.accessToken ?? "");
                       _prefs.setBool(Preferences.isLogin, true);
-                      _prefs.setBool("isIntro", true);
+                      _prefs.setString(Preferences.userUuid,
+                          state.loginModel.data?.uuid ?? "");
+                      _prefs.setString(Preferences.streamUuid,
+                          state.loginModel.data?.streamUuid ?? "");
                       _prefs.setString(Preferences.userName,
                           state.loginModel.data?.name ?? "");
                       _prefs.setString(
@@ -155,8 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                       if (checkEmail() && checkPassword()) {
                         BlocProvider.of<LoginScreenBloc>(context).add(
                           UserLoginEvent(
-                            url:
-                                "http://theguruchela.sumayinfotech.com/api/login",
+                            url: Urls.login,
                             body: {
                               "email": emailController.text,
                               "password": passwordController.text,
@@ -170,21 +174,21 @@ class _LoginPageState extends State<LoginPage> {
                     btnColor: Colors.blueGrey,
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: height * 0.02), // Responsive spacing
                 InkWell(
                   onTap: () {
-                    //Get.to(const RegisterScreen());
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const RegisterScreen(),
-                        ));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const RegisterScreen(),
+                      ),
+                    );
                   },
-                  child: const Text('Don\'t have an account? Sign Up',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  child: Text(
+                    'Don\'t have an account? Sign Up',
+                    style: TextStyle(
+                        fontSize: width * 0.045, fontWeight: FontWeight.bold),
+                  ),
                 ),
               ],
             ),
@@ -194,12 +198,14 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _loginFrom() {
+  Widget _loginForm() {
     return Form(
       key: _loginKey,
       child: Column(
         children: [
-          const SizedBox(height: 50),
+          SizedBox(
+              height: MediaQuery.of(context).size.height *
+                  0.05), // Responsive spacing
           CustomField(
             controller: emailController,
             hint: "Email",
@@ -210,37 +216,35 @@ class _LoginPageState extends State<LoginPage> {
             },
             keyboardType: TextInputType.emailAddress,
           ),
-          const SizedBox(
-            height: 20,
-          ),
           ValueListenableBuilder(
-              valueListenable: obscureTextPassword,
-              builder: (context, value, child) {
-                return CustomField(
-                  controller: passwordController,
-                  isBottomSpace: false,
-                  hint: "Password",
-                  obscureText: value,
-                  error: passwordValid ? null : passwordError,
-                  suffixIcon: IconButton(
-                    icon: Icon(value
-                        ? Icons.visibility_outlined
-                        : Icons.visibility_off_outlined),
-                    onPressed: () {
-                      obscureTextPassword.value = !obscureTextPassword.value;
-                    },
-                  ),
-                  onChanged: (value) {
-                    if (value.isNotEmpty) checkPassword();
+            valueListenable: obscureTextPassword,
+            builder: (context, value, child) {
+              return CustomField(
+                controller: passwordController,
+                isBottomSpace: false,
+                hint: "Password",
+                obscureText: value,
+                error: passwordValid ? null : passwordError,
+                suffixIcon: IconButton(
+                  icon: Icon(value
+                      ? Icons.visibility_outlined
+                      : Icons.visibility_off_outlined),
+                  onPressed: () {
+                    obscureTextPassword.value = !obscureTextPassword.value;
                   },
-                );
-              }),
+                ),
+                onChanged: (value) {
+                  if (value.isNotEmpty) checkPassword();
+                },
+              );
+            },
+          ),
         ],
       ),
     );
   }
 
-  forgotPasswordSheet() {
+  void forgotPasswordSheet() {
     showModalBottomSheet(
       isDismissible: true,
       isScrollControlled: true,
@@ -258,7 +262,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             child: Column(
               children: [
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
@@ -280,10 +284,7 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                 ),
-                const Divider(
-                  height: 5,
-                  color: Colors.black,
-                ),
+                const Divider(height: 5, color: Colors.black),
                 CustomField(
                   controller: forgotEmailController,
                   hint: "Email",
@@ -310,26 +311,28 @@ class _LoginPageState extends State<LoginPage> {
                     }
                   },
                   child: ValueListenableBuilder(
-                      valueListenable: forgotSubmitBtnLoader,
-                      builder: (context, loading, child) {
-                        return CustomBtn(
-                          name: "Submit",
-                          borderColor: Colors.black,
-                          textColor: Colors.white,
-                          btnColor: Colors.blueGrey,
-                          onTap: () {
-                            if (checkEmail()) {
-                              BlocProvider.of<ForgotPasswordBloc>(context).add(
-                                  UserForgotPasswordEvent(
-                                      url:
-                                          "https://bellit-catking.sumayinfotech.com/api/forgot-password",
-                                      body: {
-                                    "email": forgotEmailController.text,
-                                  }));
-                            }
-                          },
-                        );
-                      }),
+                    valueListenable: forgotSubmitBtnLoader,
+                    builder: (context, loading, child) {
+                      return CustomBtn(
+                        name: "Submit",
+                        borderColor: Colors.black,
+                        textColor: Colors.white,
+                        btnColor: Colors.blueGrey,
+                        onTap: () {
+                          if (checkEmail()) {
+                            BlocProvider.of<ForgotPasswordBloc>(context).add(
+                              UserForgotPasswordEvent(
+                                url: Urls.resetPass,
+                                body: {
+                                  "email": forgotEmailController.text,
+                                },
+                              ),
+                            );
+                          }
+                        },
+                      );
+                    },
+                  ),
                 ),
               ],
             ),

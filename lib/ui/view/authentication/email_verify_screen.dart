@@ -1,4 +1,5 @@
 
+import 'package:bloc_api/core/service/urls.dart';
 import 'package:bloc_api/ui/view/authentication/login_screen.dart';
 import 'package:bloc_api/ui/widget/common_snackbar.dart';
 import 'package:flutter/material.dart';
@@ -88,8 +89,7 @@ class _EmailVerifiedScreenState extends State<EmailVerifiedScreen> {
                         if (otpController.text.isNotEmpty) {
                           submitBtnLoader.value = true;
                           BlocProvider.of<OtpVerifyBloc>(context).add(UserOtpEvent(
-                              url:
-                                  "http://theguruchela.sumayinfotech.com/api/verify-email",
+                              url: Urls.verifyEmail,
                               body: {
                                 "email": widget.email,
                                 "otp": otpController.text

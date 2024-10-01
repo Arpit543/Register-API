@@ -1,6 +1,8 @@
+import 'dart:math';
 
 import 'package:bloc_api/core/bloc/stream_bloc/stream_bloc.dart';
 import 'package:bloc_api/core/bloc/subject_bloc/subject_bloc.dart';
+import 'package:bloc_api/core/service/urls.dart';
 import 'package:bloc_api/ui/view/authentication/email_verify_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,6 +51,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   ValueNotifier<bool> submitBtnLoader = ValueNotifier(false);
 
+  final Random _random = Random();
+  int randomNumber = 0;
+
+  void generateRandomNumber() {
+    setState(
+      () {
+        randomNumber = 1000 + _random.nextInt(9000);
+      },
+    );
+  }
+
   @override
   void initState() {
     callApi();
@@ -57,13 +70,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   callApi() {
     ///getCountries
-    BlocProvider.of<CountryBloc>(context).add(const UserCountryEvent(
-        url: "http://theguruchela.sumayinfotech.com/api/countries"));
+    BlocProvider.of<CountryBloc>(context)
+        .add(const UserCountryEvent(url: Urls.country));
 
     ///getStates
     if (countryValue != 0) {
       BlocProvider.of<StateBloc>(context).add(UserStateEvent(
-        url: "http://theguruchela.sumayinfotech.com/api/states",
+        url: Urls.state,
         countryId: countryValue.toString(),
       ));
     }
@@ -71,20 +84,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
     ///getCities
     if (stateValue != 0) {
       BlocProvider.of<CityBloc>(context).add(UserCityEvent(
-        url: "http://theguruchela.sumayinfotech.com/api/cities",
+        url: Urls.city,
         stateId: stateValue.toString(),
       ));
     }
 
     ///getStreams
     BlocProvider.of<StreamBloc>(context).add(const UserStreamEvent(
-      url: "http://theguruchela.sumayinfotech.com/api/streams",
+      url: Urls.streams,
     ));
 
     ///getSubjects
     if (streamValue != null) {
       BlocProvider.of<SubjectBloc>(context).add(UserSubjectEvent(
-        url: "http://theguruchela.sumayinfotech.com/api/subjects",
+        url: Urls.subject,
         uuid: streamValue.toString(),
       ));
     }
@@ -162,26 +175,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           textColor: Colors.white,
                           btnColor: Colors.blueGrey,
                           onTap: () {
-                            BlocProvider.of<RegisterScreenBloc>(context).add(
-                                UserSignUpEvent(
-                                    url:
-                                        "http://theguruchela.sumayinfotech.com/api/student-register",
-                                    body: {
-                                  "email": emailController.text,
-                                  "password": passwordController.text,
-                                  "name": nameController.text,
-                                  "mobile": mobileController.text,
-                                  "university_name": universityController.text,
-                                  "college_name": collegeController.text,
-                                  "preferred_language": languageController.text,
-                                  "other_information": otherController.text,
-                                  "country": countryValue.toString(),
-                                  "state": stateValue.toString(),
-                                  "city": cityValue.toString(),
-                                  "stream_uuid": streamValue.toString(),
-                                  "subjects": subjectValue.toString(),
-                                  "access_token": "123456",
-                                }));
+                            generateRandomNumber();
+                            BlocProvider.of<RegisterScreenBloc>(context)
+                                .add(UserSignUpEvent(url: Urls.register, body: {
+                              "email": emailController.text,
+                              "password": passwordController.text,
+                              "name": nameController.text,
+                              "mobile": mobileController.text,
+                              "university_name": universityController.text,
+                              "college_name": collegeController.text,
+                              "preferred_language": languageController.text,
+                              "other_information": otherController.text,
+                              "country": countryValue.toString(),
+                              "state": stateValue.toString(),
+                              "city": cityValue.toString(),
+                              "stream_uuid": streamValue.toString(),
+                              "subjects": subjectValue.toString(),
+                              "access_token": randomNumber,
+                            }));
                           },
                         );
                       }),
