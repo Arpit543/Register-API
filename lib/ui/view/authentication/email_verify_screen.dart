@@ -1,10 +1,11 @@
-import 'package:bloc_api/core/bloc/otp_verify_bloc/otp_verify_bloc.dart';
+
 import 'package:bloc_api/ui/view/authentication/login_screen.dart';
 import 'package:bloc_api/ui/widget/common_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
+import '../../../core/bloc/auth/otp_verify_bloc/otp_verify_bloc.dart';
 import '../../widget/common_button.dart';
 import '../../widget/common_textfield.dart';
 

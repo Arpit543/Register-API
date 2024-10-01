@@ -1,11 +1,4 @@
-import 'package:bloc_api/core/bloc/city_bloc/city_bloc.dart';
-import 'package:bloc_api/core/bloc/country_bloc/country_bloc.dart';
-import 'package:bloc_api/core/bloc/forgot_password_bloc/forgot_password_bloc.dart';
 import 'package:bloc_api/core/bloc/get_note_bloc/notes_bloc.dart';
-import 'package:bloc_api/core/bloc/login_bloc/login_screen_bloc.dart';
-import 'package:bloc_api/core/bloc/otp_verify_bloc/otp_verify_bloc.dart';
-import 'package:bloc_api/core/bloc/register_bloc/register_bloc.dart';
-import 'package:bloc_api/core/bloc/state_bloc/state_bloc.dart';
 import 'package:bloc_api/core/bloc/stream_bloc/stream_bloc.dart';
 import 'package:bloc_api/core/repository/auth_repo.dart';
 import 'package:bloc_api/core/service/api_services.dart';
@@ -16,6 +9,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
+import 'core/bloc/address/city_bloc/city_bloc.dart';
+import 'core/bloc/address/country_bloc/country_bloc.dart';
+import 'core/bloc/address/state_bloc/state_bloc.dart';
+import 'core/bloc/auth/forgot_password_bloc/forgot_password_bloc.dart';
+import 'core/bloc/auth/login_bloc/login_screen_bloc.dart';
+import 'core/bloc/auth/otp_verify_bloc/otp_verify_bloc.dart';
+import 'core/bloc/auth/register_bloc/register_bloc.dart';
 import 'core/bloc/subject_bloc/subject_bloc.dart';
 
 Future<void> main() async {

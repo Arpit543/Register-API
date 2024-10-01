@@ -1,5 +1,3 @@
-import 'package:bloc_api/core/bloc/forgot_password_bloc/forgot_password_bloc.dart';
-import 'package:bloc_api/core/bloc/login_bloc/login_screen_bloc.dart';
 import 'package:bloc_api/core/service/shredPreferences.dart';
 import 'package:bloc_api/core/service/validation.dart';
 import 'package:bloc_api/ui/view/authentication/dash_board.dart';
@@ -9,6 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../core/bloc/auth/forgot_password_bloc/forgot_password_bloc.dart';
+import '../../../core/bloc/auth/login_bloc/login_screen_bloc.dart';
 import '../../widget/common_button.dart';
 import '../../widget/common_snackbar.dart';
 import '../../widget/common_textfield.dart';
@@ -128,7 +128,6 @@ class _LoginPageState extends State<LoginPage> {
                     if (state is LoginSuccess) {
                       _prefs.setString(Preferences.token,
                           state.loginModel.data?.accessToken ?? "");
-                      print(state.loginModel.data?.accessToken);
                       _prefs.setString(Preferences.token,
                           state.loginModel.data?.accessToken ?? "");
                       _prefs.setBool(Preferences.isLogin, true);

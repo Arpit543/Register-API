@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../Model/authModel/login_data.dart';
-import '../../repository/auth_repo.dart';
-import '../../service/api_services.dart';
+import '../../../Model/authModel/login_data.dart';
+import '../../../repository/auth_repo.dart';
+import '../../../service/api_services.dart';
 
 part 'login_screen_event.dart';
 part 'login_screen_state.dart';

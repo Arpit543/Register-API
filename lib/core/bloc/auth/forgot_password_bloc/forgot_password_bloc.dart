@@ -1,8 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../repository/auth_repo.dart';
-import '../../service/api_services.dart';
+import '../../../repository/auth_repo.dart';
+import '../../../service/api_services.dart';
+
 
 part 'forgot_password_event.dart';
 part 'forgot_password_state.dart';

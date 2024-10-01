@@ -2,8 +2,9 @@ import 'package:bloc/bloc.dart';
 import 'package:bloc_api/core/Model/addressModel/state_data.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../repository/auth_repo.dart';
-import '../../service/api_services.dart';
+import '../../../repository/auth_repo.dart';
+import '../../../service/api_services.dart';
+
 
 part 'state_event.dart';
 part 'state_state.dart';

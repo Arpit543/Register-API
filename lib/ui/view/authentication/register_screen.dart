@@ -1,6 +1,4 @@
-import 'package:bloc_api/core/bloc/country_bloc/country_bloc.dart';
-import 'package:bloc_api/core/bloc/register_bloc/register_bloc.dart';
-import 'package:bloc_api/core/bloc/state_bloc/state_bloc.dart';
+
 import 'package:bloc_api/core/bloc/stream_bloc/stream_bloc.dart';
 import 'package:bloc_api/core/bloc/subject_bloc/subject_bloc.dart';
 import 'package:bloc_api/ui/view/authentication/email_verify_screen.dart';
@@ -8,7 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-import '../../../core/bloc/city_bloc/city_bloc.dart';
+import '../../../core/bloc/address/city_bloc/city_bloc.dart';
+import '../../../core/bloc/address/country_bloc/country_bloc.dart';
+import '../../../core/bloc/address/state_bloc/state_bloc.dart';
+import '../../../core/bloc/auth/register_bloc/register_bloc.dart';
 import '../../widget/common_button.dart';
 import '../../widget/common_snackbar.dart';
 import '../../widget/common_textfield.dart';
@@ -148,7 +149,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       showSnackBar(
                           context: context,
                           isError: true,
-                          message: state.error ?? "");
+                          message: state.error);
                     }
                   },
                   child: ValueListenableBuilder(
@@ -689,8 +690,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     streamController.text = name;
                                     streamValue = id.toString();
                                     callApi();
-                                    print(
-                                        "stream_uuid :--------------- ${streamValue}");
                                     Navigator.pop(context);
                                   },
                                 ),
