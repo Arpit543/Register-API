@@ -15,9 +15,11 @@ class _UploadNotesState extends State<UploadNotes> {
       appBar: AppBar(
         title: const Text("Upload Notes"),
       ),
-      body: SafeArea(
+      body: const SafeArea(
         child: Column(
-          children: [],
+          children: [
+
+          ],
         ),
       ),
     );

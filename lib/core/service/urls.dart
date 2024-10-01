@@ -1,5 +1,5 @@
 class Urls {
-  static const String baseUrl = "http://theguruchela.sumayinfotech.com/";
+  static const String baseUrl = "http://theguruchela.sumayinfotech.com";
 
   ///Get Notes
   static const String getNotes = "$baseUrl/api/get-notes";

@@ -1,8 +1,10 @@
 import 'package:bloc_api/core/Model/Notes/GetNotes.dart';
 import 'package:bloc_api/core/bloc/get_note_bloc/notes_bloc.dart';
 import 'package:bloc_api/ui/view/authentication/login_screen.dart';
+import 'package:bloc_api/ui/view/authentication/upload_notes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 import '../../../core/service/shredPreferences.dart';
 import '../../../core/service/urls.dart';
@@ -86,7 +88,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   const EdgeInsets.symmetric(horizontal: 20),
                               itemBuilder: (context, index) {
                                 final notes = getNotes.data!.data[index];
-
+                                print(notes.user!.fullImagePath);
                                 return Padding(
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 5),
@@ -98,22 +100,50 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           color: const Color(0xffF3F3F3)),
                                     ),
                                     child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Expanded(
-                                              child: Text(
-                                                "Title: --- ${notes.user!.collegeName}, \n Description: --- ${notes.user!.name}",
-                                                overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                          ],
+                                        Text(
+                                          "Uuid: ${notes.user!.uuid}",
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          "Name: ${notes.user!.name}",
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          "Role: ${notes.user!.role}",
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          "City: ${notes.user!.city}",
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          "University Name: ${notes.user!.universityName}",
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          "College Name: ${notes.user!.collegeName}",
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
                                         ),
                                       ],
                                     ),
@@ -185,6 +215,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
             }
           },*/
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Get.to(const UploadNotes());
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }
