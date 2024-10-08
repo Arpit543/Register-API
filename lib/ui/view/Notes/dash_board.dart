@@ -1,7 +1,7 @@
 import 'package:bloc_api/core/Model/Notes/GetNotes.dart';
 import 'package:bloc_api/core/bloc/get_note_bloc/notes_bloc.dart';
+import 'package:bloc_api/ui/view/Notes/upload_notes.dart';
 import 'package:bloc_api/ui/view/authentication/login_screen.dart';
-import 'package:bloc_api/ui/view/authentication/upload_notes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -23,10 +23,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<NotesBloc>(context).add(UserNotesEvent(
-      url: Urls.getNotes,
-      userUuid: Preferences.getString(Preferences.userUuid) ?? "",
-    ));
+    BlocProvider.of<NotesBloc>(context).add(
+      const UserNotesEvent(
+        url: Urls.getNotes,
+        userUuid: /*Preferences.getString(Preferences.userUuid) ?? ""*/
+            "acdf96be-ae8f-4647-8c22-314141ef716f",
+      ),
+    );
   }
 
   @override
@@ -84,66 +87,67 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             return ListView.builder(
                               shrinkWrap: true,
                               itemCount: getNotes.data!.data.length,
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
                               itemBuilder: (context, index) {
                                 final notes = getNotes.data!.data[index];
-                                print(notes.user!.fullImagePath);
                                 return Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 5),
+                                  padding: const EdgeInsets.all(8.0),
                                   child: Container(
-                                    padding: const EdgeInsets.all(10),
+                                    padding: const EdgeInsets.all(5),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(18),
-                                      border: Border.all(
-                                          color: const Color(0xffF3F3F3)),
+                                      border: Border.all(color: Colors.grey),
                                     ),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          "Uuid: ${notes.user!.uuid}",
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
+                                        Text.rich(
+                                          TextSpan(children: [
+                                            const TextSpan(
+                                              text: "Name :",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            TextSpan(
+                                              text: " ${notes.user!.name}",
+                                              style:
+                                                  const TextStyle(fontSize: 13),
+                                            ),
+                                          ]),
                                         ),
-                                        Text(
-                                          "Name: ${notes.user!.name}",
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
+                                        Text.rich(
+                                          TextSpan(children: [
+                                            const TextSpan(
+                                              text: "Uuid :",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            TextSpan(
+                                              text: " ${notes.user!.uuid}",
+                                              style:
+                                                  const TextStyle(fontSize: 13),
+                                            ),
+                                          ]),
                                         ),
-                                        Text(
-                                          "Role: ${notes.user!.role}",
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        Text(
-                                          "City: ${notes.user!.city}",
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        Text(
-                                          "University Name: ${notes.user!.universityName}",
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        Text(
-                                          "College Name: ${notes.user!.collegeName}",
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
+                                        Text.rich(
+                                          TextSpan(children: [
+                                            const TextSpan(
+                                              text: "Role :",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            TextSpan(
+                                              text: " ${notes.user!.role}",
+                                              style:
+                                                  const TextStyle(fontSize: 13),
+                                            ),
+                                          ]),
                                         ),
                                       ],
                                     ),

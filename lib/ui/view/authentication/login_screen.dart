@@ -1,10 +1,9 @@
 import 'package:bloc_api/core/service/shredPreferences.dart';
 import 'package:bloc_api/core/service/validation.dart';
-import 'package:bloc_api/ui/view/authentication/dash_board.dart';
+import 'package:bloc_api/ui/view/Notes/dash_board.dart';
 import 'package:bloc_api/ui/view/authentication/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/bloc/auth/forgot_password_bloc/forgot_password_bloc.dart';
@@ -15,7 +14,7 @@ import '../../widget/common_snackbar.dart';
 import '../../widget/common_textfield.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -145,7 +144,13 @@ class _LoginPageState extends State<LoginPage> {
                           isError: false,
                           message: "Login Successfully.",
                           context: context);
-                      Get.to(const DashboardScreen());
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const DashboardScreen(),
+                        ),
+                        (route) => false,
+                      );
                     } else if (state is LoginFailed) {
                       showSnackBar(
                           isError: true,

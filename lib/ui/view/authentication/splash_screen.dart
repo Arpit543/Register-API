@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc_api/core/service/shredPreferences.dart';
-import 'package:bloc_api/ui/view/authentication/dash_board.dart';
+import 'package:bloc_api/ui/view/Notes/dash_board.dart';
 import 'package:bloc_api/ui/view/authentication/login_screen.dart';
 import 'package:flutter/material.dart';
 

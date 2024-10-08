@@ -85,7 +85,7 @@ class _UploadNotesState extends State<UploadNotes> {
         backgroundColor: Colors.blueGrey,
         iconTheme: const IconThemeData(color: Colors.white),
         title:
-            const Text("Upload Notes", style: TextStyle(color: Colors.white)),
+        const Text("Upload Notes", style: TextStyle(color: Colors.white)),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -93,23 +93,22 @@ class _UploadNotesState extends State<UploadNotes> {
             padding: const EdgeInsets.all(10.0),
             child: Column(
               children: [
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 CustomField(
                   controller: subjectsController,
                   hint: "Subject",
                   autofillHints: const [AutofillHints.postalAddress],
                   keyboardType: TextInputType.text,
-                  isBottomSpace: true,
                   readOnly: true,
                   onTap: subjectBottomSheet,
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 CustomField(
                   controller: titleController,
                   hint: "Title",
                   keyboardType: TextInputType.text,
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 CustomField(
                   controller: descriptionController,
                   hint: "Description",
@@ -118,25 +117,34 @@ class _UploadNotesState extends State<UploadNotes> {
                 const SizedBox(height: 10),
                 _buildFilePickerCard(
                     imageFile != null
-                        ? imageFile!.path.split('/').last
+                        ? imageFile!
+                        .path
+                        .split('/')
+                        .last
                         : 'Select Images',
                     Icons.image,
                     _pickImage),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 _buildFilePickerCard(
                     audioFile != null
-                        ? audioFile!.path.split('/').last
+                        ? audioFile!
+                        .path
+                        .split('/')
+                        .last
                         : 'Select Audio',
                     Icons.audio_file,
                     _pickAudio),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 _buildFilePickerCard(
                     pdfFile != null
-                        ? pdfFile!.path.split('/').last
+                        ? pdfFile!
+                        .path
+                        .split('/')
+                        .last
                         : 'Select PDF',
                     Icons.picture_as_pdf,
                     _pickPDF),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 BlocListener<NoteUploadBloc, NoteUploadState>(
                   listener: (context, state) {
                     if (state is NoteUploadSuccess) {
@@ -160,11 +168,10 @@ class _UploadNotesState extends State<UploadNotes> {
                           descriptionController.text.isNotEmpty) {
                         BlocProvider.of<NoteUploadBloc>(context).add(
                           UserUploadEvent(
-                            url:
-                                "http://theguruchela.sumayinfotech.com/api/upload-notes",
+                            url: Urls.uploadNotes,
                             body: {
                               "user_uuid":
-                                  Preferences.getString(Preferences.userUuid),
+                              Preferences.getString(Preferences.userUuid),
                               "subject_uuid": subjectUuid,
                               "title": titleController.text,
                               "description": descriptionController.text,
@@ -220,9 +227,15 @@ class _UploadNotesState extends State<UploadNotes> {
       builder: (context) {
         return SafeArea(
           child: Container(
-            height: MediaQuery.of(context).size.height / 2,
+            height: MediaQuery
+                .of(context)
+                .size
+                .height / 2,
             padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
+              bottom: MediaQuery
+                  .of(context)
+                  .viewInsets
+                  .bottom,
             ),
             decoration: BoxDecoration(
               border: Border.all(color: Colors.grey, width: 1),
